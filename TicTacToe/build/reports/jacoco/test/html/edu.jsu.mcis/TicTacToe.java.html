@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TicTacToe.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TicTacToe</a> &gt; <a href="index.source.html" class="el_package">edu.jsu.mcis</a> &gt; <span class="el_source">TicTacToe.java</span></div><h1>TicTacToe.java</h1><pre class="source lang-java linenums">package edu.jsu.mcis;
+import java.util.*;
+
+public class TicTacToe {
+	
+	private String [][] board;
+	private boolean xsTurn;
+	private boolean xWin;
+	private int turnNumber;
+	
+<span class="fc" id="L11">	public TicTacToe(){</span>
+<span class="fc" id="L12">		board = new String[3][3];</span>
+<span class="fc" id="L13">		xsTurn = false;</span>
+<span class="fc" id="L14">		xWin = false;</span>
+<span class="fc" id="L15">		turnNumber = 0;</span>
+<span class="fc" id="L16">	}</span>
+	
+	public void createBoard(){
+<span class="fc bfc" id="L19" title="All 2 branches covered.">		for(int i = 0; i &lt; 3; i++)</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">			for(int j = 0; j &lt; 3; j++)</span>
+<span class="fc" id="L21">				board[i][j] = &quot; &quot;;</span>
+<span class="fc" id="L22">	}</span>
+	
+	public void printBoard() {
+<span class="nc" id="L25">        System.out.println(&quot;-------------&quot;);</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        for (int i = 0; i &lt; 3; i++){</span>
+<span class="nc" id="L27">            System.out.print(&quot;| &quot;);</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">            for (int j = 0; j &lt; 3; j++) {</span>
+<span class="nc" id="L29">                System.out.print(board[i][j] + &quot; | &quot;);</span>
+            }
+<span class="nc" id="L31">            System.out.println();</span>
+<span class="nc" id="L32">            System.out.println(&quot;-------------&quot;);</span>
+        }
+<span class="nc" id="L34">    }</span>
+
+	
+	public void markBoard(int row, int column){
+<span class="fc bfc" id="L38" title="All 2 branches covered.">		if(checkForValidSpot(row, column)){</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">			xsTurn = !xsTurn;</span>
+<span class="fc" id="L40">			turnNumber++;</span>
+<span class="fc" id="L41">			checkForWin(row, column);</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">			if(xsTurn)</span>
+<span class="fc" id="L43">				board[row][column] = &quot;X&quot;;</span>
+			else
+<span class="fc" id="L45">				board[row][column] = &quot;O&quot;;</span>
+		}
+<span class="fc" id="L47">	}</span>
+	
+	public boolean checkForValidSpot(int row, int column){
+<span class="pc bpc" id="L50" title="1 of 4 branches missed.">		if(board[row][column] == &quot;X&quot; || board[row][column] == &quot;O&quot;)</span>
+<span class="fc" id="L51">			return false;</span>
+		else
+<span class="fc" id="L53">			return true;</span>
+	}
+	
+	public String checkSpot(int row, int column){
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		if(board[row][column] == &quot;X&quot;)</span>
+<span class="fc" id="L58">			return &quot;X&quot;;</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">		else if(board[row][column] == &quot;O&quot;)</span>
+<span class="fc" id="L60">			return &quot;O&quot;;</span>
+		else
+<span class="nc" id="L62">			return &quot;EMPTY&quot;;</span>
+	}
+	
+	public boolean isBoardEmpty(){
+<span class="fc bfc" id="L66" title="All 2 branches covered.">		for(int i = 0; i &lt; 3; i++)</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">			for(int j = 0; j &lt; 3; j++)</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">				if(board[i][j] != &quot; &quot;)</span>
+<span class="nc" id="L69">					return false;</span>
+<span class="fc" id="L70">		return true;</span>
+	}
+	
+	public boolean isGameOver(){
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">		return !(turnNumber &lt; 9);</span>
+	}
+	
+	public boolean isGameOver(int row, int column){
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">		if(turnNumber &lt; 9)</span>
+<span class="nc" id="L79">			return checkForWin(row, column);</span>
+		else
+<span class="fc" id="L81">			return true;</span>
+	}
+	
+	public boolean checkForWin(int row, int column){
+<span class="fc" id="L85">		boolean horizontalWin = true; boolean verticalWin = true; boolean diagonalWin = true; boolean diagonalWin1 = true;</span>
+		String player;
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		if(xsTurn)</span>
+<span class="fc" id="L88">			player = &quot;X&quot;;</span>
+		else
+<span class="fc" id="L90">			player = &quot;O&quot;;</span>
+		
+<span class="fc bfc" id="L92" title="All 2 branches covered.">		for(int i = 0; i &lt; 3; i++){</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">			if(board[row][i] != player)</span>
+<span class="fc" id="L94">				horizontalWin = false;</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">			if(board[i][column] != player)</span>
+<span class="fc" id="L96">				verticalWin = false;</span>
+		}
+		
+<span class="pc bpc" id="L99" title="1 of 6 branches missed.">		if(board[0][0] != player &amp;&amp; board[1][1] != player &amp;&amp; board[2][2] != player)</span>
+<span class="fc" id="L100">			diagonalWin = false;</span>
+<span class="pc bpc" id="L101" title="1 of 6 branches missed.">		if(board[0][2] != player &amp;&amp; board[1][1] != player &amp;&amp; board[2][0] != player)</span>
+<span class="fc" id="L102">			diagonalWin1 = false;</span>
+		
+<span class="pc bpc" id="L104" title="2 of 10 branches missed.">		if((horizontalWin || verticalWin || diagonalWin || diagonalWin1) &amp;&amp; player == &quot;X&quot;)</span>
+<span class="fc" id="L105">			xWin = true;</span>
+		else
+<span class="fc" id="L107">			xWin = false;</span>
+		
+<span class="pc bpc" id="L109" title="2 of 8 branches missed.">		return (horizontalWin || verticalWin || diagonalWin || diagonalWin1);</span>
+	}
+	
+	public String declareWin(){
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		if(isGameOver())</span>
+<span class="nc" id="L114">			return &quot;TIE&quot;;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		else if(xWin)</span>
+<span class="nc" id="L116">			return &quot;X&quot;;</span>
+		else
+<span class="nc" id="L118">			return &quot;O&quot;;</span>
+	}
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
